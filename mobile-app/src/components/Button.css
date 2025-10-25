@@ -1,0 +1,44 @@
+.btn {
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: #646cff;
+  color: white;
+}
+
+.btn-primary:active {
+  background: #535bf2;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.87);
+}
+
+.btn-secondary:active {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+@media (prefers-color-scheme: light) {
+  .btn-secondary {
+    background: rgba(0, 0, 0, 0.05);
+    color: rgba(0, 0, 0, 0.87);
+  }
+
+  .btn-secondary:active {
+    background: rgba(0, 0, 0, 0.1);
+  }
+}
