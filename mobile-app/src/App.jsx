@@ -1,36 +1,49 @@
 import { useState } from 'react'
+import PhoneFrame from './components/PhoneFrame'
+import LoadingScreen from './components/LoadingScreen'
+import LoginPage from './components/LoginPage'
+import UserTypeSelection from './components/UserTypeSelection'
+import Dashboard from './components/Dashboard'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [currentScreen, setCurrentScreen] = useState('loading')
+  const [userCredentials, setUserCredentials] = useState(null)
+  const [userType, setUserType] = useState(null)
+
+  const handleLoadComplete = () => {
+    setCurrentScreen('login')
+  }
+
+  const handleLoginSuccess = (credentials) => {
+    setUserCredentials(credentials)
+    setCurrentScreen('userTypeSelection')
+  }
+
+  const handleUserTypeSelect = (type) => {
+    setUserType(type)
+    setCurrentScreen('dashboard')
+  }
+
+  const renderScreen = () => {
+    switch (currentScreen) {
+      case 'loading':
+        return <LoadingScreen onLoadComplete={handleLoadComplete} />
+      case 'login':
+        return <LoginPage onLoginSuccess={handleLoginSuccess} />
+      case 'userTypeSelection':
+        return <UserTypeSelection onSelectType={handleUserTypeSelect} />
+      case 'dashboard':
+        return <Dashboard userType={userType} />
+      default:
+        return <LoadingScreen onLoadComplete={handleLoadComplete} />
+    }
+  }
 
   return (
-    <div className="app">
-      <header className="header">
-        <h1>Mobile App</h1>
-      </header>
-
-      <main className="main">
-        <div className="card">
-          <h2>Welcome to your mobile app</h2>
-          <p>Built with React + Vite</p>
-
-          <div className="counter">
-            <button onClick={() => setCount((count) => count - 1)}>-</button>
-            <span className="count">{count}</span>
-            <button onClick={() => setCount((count) => count + 1)}>+</button>
-          </div>
-
-          <p className="hint">
-            Edit <code>src/App.jsx</code> to get started
-          </p>
-        </div>
-      </main>
-
-      <footer className="footer">
-        <p>React + Vite Mobile Template</p>
-      </footer>
-    </div>
+    <PhoneFrame>
+      {renderScreen()}
+    </PhoneFrame>
   )
 }
 

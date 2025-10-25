@@ -1,0 +1,268 @@
+.settings-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.settings-modal {
+  background: white;
+  width: 100%;
+  max-height: 85%;
+  border-radius: 20px 20px 0 0;
+  overflow-y: auto;
+  animation: slideUpModal 0.3s ease-out;
+}
+
+.settings-header {
+  position: sticky;
+  top: 0;
+  background: white;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+
+.settings-header h2 {
+  color: #333;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.close-btn {
+  background: rgba(0, 0, 0, 0.05);
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.close-btn:active {
+  background: rgba(0, 0, 0, 0.1);
+  transform: scale(0.95);
+}
+
+.settings-content {
+  padding: 1rem 1.5rem 2rem;
+}
+
+.settings-section {
+  margin-bottom: 2rem;
+}
+
+.settings-section h3 {
+  color: #333;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.setting-item:last-child {
+  border-bottom: none;
+}
+
+.setting-item.clickable {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.setting-item.clickable:active {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.setting-info {
+  flex: 1;
+}
+
+.setting-info label {
+  color: #333;
+  font-weight: 500;
+  font-size: 1rem;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.setting-info p {
+  color: #999;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.arrow {
+  color: #ccc;
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.3s;
+  border-radius: 28px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+.save-location-btn {
+  width: 100%;
+  padding: 0.875rem;
+  background: linear-gradient(135deg, #f7b731 0%, #f39c12 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: all 0.3s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.save-location-btn:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 1rem;
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: all 0.3s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.logout-btn:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUpModal {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .settings-modal {
+    background: #1a1a1a;
+  }
+
+  .settings-header {
+    background: #1a1a1a;
+    border-bottom-color: #333;
+  }
+
+  .settings-header h2 {
+    color: #fff;
+  }
+
+  .close-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+
+  .close-btn:active {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .settings-section h3 {
+    color: #fff;
+  }
+
+  .setting-item {
+    border-bottom-color: #333;
+  }
+
+  .setting-info label {
+    color: #fff;
+  }
+
+  .setting-info p {
+    color: #999;
+  }
+
+  .arrow {
+    color: #666;
+  }
+}

@@ -1,0 +1,284 @@
+.dashboard {
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  overflow-y: auto;
+  position: relative;
+}
+
+.dashboard-header {
+  padding: 2rem 1rem;
+  color: white;
+  background: rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.dashboard-header h1 {
+  font-size: 2rem;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  padding: 0.5rem 1.25rem;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.settings-btn {
+  background: transparent;
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: all 0.3s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  flex-shrink: 0;
+}
+
+.settings-btn:active {
+  transform: scale(0.95);
+  opacity: 0.7;
+}
+
+.header-spacer {
+  width: 44px;
+  flex-shrink: 0;
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.emergency-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.emergency-btn {
+  background: white;
+  border: none;
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  position: relative;
+  overflow: hidden;
+}
+
+.emergency-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, transparent 0%, rgba(0, 0, 0, 0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.emergency-btn:active::before {
+  opacity: 1;
+}
+
+.emergency-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+.emergency-btn h2 {
+  color: #333;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.emergency-btn p {
+  color: #666;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.ems-btn {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+}
+
+.ems-btn h2,
+.ems-btn p {
+  color: white;
+}
+
+.care-btn {
+  background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+}
+
+.care-btn h2,
+.care-btn p {
+  color: white;
+}
+
+.location-btn {
+  background: linear-gradient(135deg, #f7b731 0%, #f39c12 100%);
+}
+
+.location-btn h2,
+.location-btn p {
+  color: white;
+}
+
+.location-btn.sent {
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+}
+
+.dashboard-info {
+  margin-top: auto;
+}
+
+.info-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.info-card h3 {
+  color: #333;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.info-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.info-card li {
+  color: #666;
+  font-size: 0.95rem;
+  padding: 0.5rem 0;
+  line-height: 1.5;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@media (min-width: 400px) {
+  .emergency-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ems-btn {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 360px) {
+  .dashboard-header {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .user-type-badge {
+    font-size: 0.85rem;
+    padding: 0.4rem 1rem;
+  }
+
+  .settings-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+  }
+
+  .header-spacer {
+    width: 40px;
+  }
+
+  .emergency-btn {
+    padding: 1.5rem 1rem;
+  }
+
+  .btn-icon {
+    font-size: 3rem;
+  }
+
+  .emergency-btn h2 {
+    font-size: 1.25rem;
+  }
+
+  .emergency-btn p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .info-card {
+    background: rgba(30, 30, 30, 0.95);
+  }
+
+  .info-card h3 {
+    color: #fff;
+  }
+
+  .info-card li {
+    color: rgba(255, 255, 255, 0.7);
+  }
+}
