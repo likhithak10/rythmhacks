@@ -1,0 +1,141 @@
+.user-type-selection {
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  overflow-y: auto;
+}
+
+.selection-container {
+  width: 100%;
+  max-width: 400px;
+  animation: fadeInScale 0.5s ease-out;
+}
+
+.selection-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: white;
+}
+
+.selection-header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.selection-header p {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.selection-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.type-option {
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.type-option:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.type-option:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.option-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.type-option h2 {
+  color: #333;
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.type-option p {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.user-option:active {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+}
+
+.care-option:active {
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.1) 0%, rgba(255, 159, 64, 0.1) 100%);
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 480px) {
+  .selection-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .selection-header p {
+    font-size: 0.95rem;
+  }
+
+  .type-option {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .option-icon {
+    font-size: 2.5rem;
+  }
+
+  .type-option h2 {
+    font-size: 1.25rem;
+  }
+
+  .type-option p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .type-option {
+    background: rgba(30, 30, 30, 0.95);
+  }
+
+  .type-option h2 {
+    color: #fff;
+  }
+
+  .type-option p {
+    color: rgba(255, 255, 255, 0.7);
+  }
+}
