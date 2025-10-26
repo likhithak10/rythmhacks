@@ -68,11 +68,36 @@
   margin-bottom: 2rem;
 }
 
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
 .settings-section h3 {
   color: #333;
   font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 1rem;
+  margin: 0;
+}
+
+.edit-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.edit-btn:active {
+  transform: scale(0.95);
+  opacity: 0.9;
 }
 
 .setting-item {
@@ -112,6 +137,83 @@
   color: #999;
   font-size: 0.85rem;
   margin: 0;
+}
+
+.setting-info p.readonly {
+  color: #999;
+  font-style: italic;
+}
+
+.edit-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #333;
+  margin-top: 0.5rem;
+  transition: all 0.3s;
+}
+
+.edit-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.edit-buttons {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.save-btn {
+  flex: 1;
+  padding: 0.875rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.save-btn:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+.cancel-btn {
+  flex: 1;
+  padding: 0.875rem;
+  background: #e0e0e0;
+  color: #666;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cancel-btn:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+.edit-address-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.edit-address-row .setting-item {
+  flex: 1;
 }
 
 .arrow {
@@ -264,5 +366,25 @@ input:checked + .slider:before {
 
   .arrow {
     color: #666;
+  }
+
+  .edit-input {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+  }
+
+  .edit-input:focus {
+    border-color: #667eea;
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .edit-buttons {
+    border-top-color: #333;
+  }
+
+  .cancel-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
   }
 }

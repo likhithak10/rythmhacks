@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './firebase';
+import { doc, getDoc } from 'firebase/firestore';
+import { auth, db } from './firebase';
 
 import PhoneFrame from './components/PhoneFrame';
 import LoadingScreen from './components/LoadingScreen';
@@ -18,9 +19,24 @@ function App() {
     setCurrentScreen('login');
   };
 
-  const handleLoginSuccess = (credentials) => {
+  const handleLoginSuccess = async (credentials) => {
     setUserCredentials(credentials);
-    setCurrentScreen('userTypeSelection');
+
+    // Fetch user type from Firestore
+    try {
+      const userDoc = await getDoc(doc(db, 'users', credentials.uid));
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        setUserType(userData['account-type']);
+        setCurrentScreen('dashboard');
+      } else {
+        // If no user document exists (old users), show type selection
+        setCurrentScreen('userTypeSelection');
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      setCurrentScreen('userTypeSelection');
+    }
   };
 
   const handleUserTypeSelect = (type) => {
@@ -31,10 +47,25 @@ function App() {
   useEffect(() => {
     // Show loading animation first for ~2 seconds
     const loadingTimer = setTimeout(() => {
-      const unsubscribe = onAuthStateChanged(auth, (user) => {
+      const unsubscribe = onAuthStateChanged(auth, async (user) => {
         if (user) {
           setUserCredentials(user);
-          setCurrentScreen('dashboard');
+
+          // Fetch user type from Firestore
+          try {
+            const userDoc = await getDoc(doc(db, 'users', user.uid));
+            if (userDoc.exists()) {
+              const userData = userDoc.data();
+              setUserType(userData['account-type']);
+              setCurrentScreen('dashboard');
+            } else {
+              // If no user document exists (old users), show type selection
+              setCurrentScreen('userTypeSelection');
+            }
+          } catch (error) {
+            console.error('Error fetching user data:', error);
+            setCurrentScreen('userTypeSelection');
+          }
         } else {
           setCurrentScreen('login');
         }

@@ -1,12 +1,23 @@
 import { useState } from 'react';
 import './LoginPage.css';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
+import { doc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase';
 
 export default function LoginPage({ onLoginSuccess }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isCreating, setIsCreating] = useState(false); // toggle between login/signup
+  const [userType, setUserType] = useState('user'); // 'user' or 'care-giver'
+
+  // Additional signup fields
+  const [name, setName] = useState('');
+  const [birthday, setBirthday] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [street, setStreet] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [zipCode, setZipCode] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,6 +26,25 @@ export default function LoginPage({ onLoginSuccess }) {
       if (isCreating) {
         // ✨ Sign-up
         userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+        // Save user data to Firestore
+        await setDoc(doc(db, 'users', userCredential.user.uid), {
+          email: email,
+          'account-type': userType,
+          name: name,
+          birthday: birthday,
+          'phone number': phoneNumber,
+          createdAt: new Date().toISOString(),
+        });
+
+        // Save home address as a subcollection
+        await setDoc(doc(db, 'users', userCredential.user.uid, 'home address', 'address'), {
+          street: street,
+          city: city,
+          state: state,
+          zipCode: zipCode,
+        });
+
         alert('Account created successfully! 🎉');
       } else {
         // 🔐 Login
@@ -59,6 +89,110 @@ export default function LoginPage({ onLoginSuccess }) {
               required
             />
           </div>
+
+          {isCreating && (
+            <>
+              <div className="form-group">
+                <label htmlFor="name">Full Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Enter your full name"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="birthday">Birthday</label>
+                <input
+                  type="date"
+                  id="birthday"
+                  value={birthday}
+                  onChange={(e) => setBirthday(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="phoneNumber">Phone Number</label>
+                <input
+                  type="tel"
+                  id="phoneNumber"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  placeholder="(123) 456-7890"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="street">Street Address</label>
+                <input
+                  type="text"
+                  id="street"
+                  value={street}
+                  onChange={(e) => setStreet(e.target.value)}
+                  placeholder="123 Main St"
+                  required
+                />
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="city">City</label>
+                  <input
+                    type="text"
+                    id="city"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    placeholder="City"
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="state">State</label>
+                  <input
+                    type="text"
+                    id="state"
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
+                    placeholder="CA"
+                    maxLength="2"
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="zipCode">Zip Code</label>
+                  <input
+                    type="text"
+                    id="zipCode"
+                    value={zipCode}
+                    onChange={(e) => setZipCode(e.target.value)}
+                    placeholder="12345"
+                    maxLength="5"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="userType">I am a:</label>
+                <select
+                  id="userType"
+                  value={userType}
+                  onChange={(e) => setUserType(e.target.value)}
+                  required
+                >
+                  <option value="user">User</option>
+                  <option value="care-giver">Care Giver</option>
+                </select>
+              </div>
+            </>
+          )}
 
           <button type="submit" className="login-button">
             {isCreating ? 'Create Account' : 'Sign In'}
