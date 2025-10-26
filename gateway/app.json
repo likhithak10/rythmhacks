@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "gateway",
+    "slug": "gateway",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "gateway",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.likhithak10.gateway",
+      "infoPlist": {
+        "NSBluetoothAlwaysUsageDescription": "App uses BLE to receive fall alerts.",
+        "NSBluetoothPeripheralUsageDescription": "App uses BLE to receive fall alerts.",
+        "NSLocationWhenInUseUsageDescription": "Needed for BLE scanning on iOS."
+      }
+    },
+    "android": {
+      "permissions": [
+        "android.permission.BLUETOOTH",
+        "android.permission.BLUETOOTH_ADMIN",
+        "android.permission.BLUETOOTH_CONNECT",
+        "android.permission.BLUETOOTH_SCAN",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.INTERNET"
+      ],
+      "package": "com.likhithak10.gateway"
+    },
+    "plugins": [
+      [
+        "react-native-ble-plx",
+        {
+          "isBackgroundEnabled": false,
+          "modes": [
+            "central"
+          ]
+        }
+      ]
+    ]
+  }
+}

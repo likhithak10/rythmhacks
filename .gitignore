@@ -1,0 +1,84 @@
+# --- General ---
+*.log
+*.pid
+*.pid.lock
+*.seed
+*.swp
+*.swo
+*.iml
+*.tsbuildinfo
+*.map
+
+logs/
+.eslintcache
+.cache/
+.parcel-cache/
+coverage/
+dist/
+build/
+tmp/
+temp/
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editors/IDEs
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# --- Node / Monorepo ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+.env.local
+.env.*.local
+
+# --- Next.js (next/) ---
+.next/
+out/
+.vercel/
+.turbo/
+next/.next/
+next/out/
+
+# --- Vite (mobile-app/) ---
+mobile-app/dist/
+mobile-app/.vite/
+
+# --- React Native / Android (gateway/) ---
+gateway/android/.gradle/
+gateway/android/.idea/
+gateway/android/local.properties
+gateway/android/captures/
+gateway/android/.cxx/
+gateway/android/.externalNativeBuild/
+gateway/android/build/
+gateway/android/app/build/
+gateway/android/**/*.keystore
+gateway/android/**/*.jks
+
+# Keep Gradle wrapper in VCS
+# (do not ignore gradlew/gradlew.bat)
+
+# Expo (if used)
+.expo/
+.expo-shared/
+
+# --- Misc build tool caches ---
+.nyc_output/
+.husky/_/
+.turbo/
+
+

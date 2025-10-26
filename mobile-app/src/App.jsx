@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import PhoneFrame from './components/PhoneFrame'
 import LoadingScreen from './components/LoadingScreen'
 import LoginPage from './components/LoginPage'
 import UserTypeSelection from './components/UserTypeSelection'
+import BleGateway from './components/BleGateway'
 import './App.css'
 
 function App() {
@@ -25,7 +26,10 @@ function App() {
     // Here you can navigate to the main app or dashboard
   }
 
+  const isGateway = useMemo(() => new URLSearchParams(window.location.search).get('gateway') === '1', [])
+
   const renderScreen = () => {
+    if (isGateway) return <BleGateway />
     switch (currentScreen) {
       case 'loading':
         return <LoadingScreen onLoadComplete={handleLoadComplete} />
