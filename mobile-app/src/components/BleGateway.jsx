@@ -4,8 +4,8 @@ const FALL_SERVICE_UUID = '12345678-1234-5678-1234-56789abcdef0'
 const FALL_CHAR_UUID = '12345678-1234-5678-1234-56789abcdef2'
 const PERIPHERAL_NAME = 'Nano33BLE-Fall'
 
-export default function BleGateway() {
-  const [apiUrl, setApiUrl] = useState(() => localStorage.getItem('gateway.apiUrl') || 'http://localhost:3000/api/fall')
+export default function BleGateway({ onFall, onProximity, initialApiUrl, onApiUrlChange, deviceSelection, onDeviceSelectionChange, compact = false }) {
+  const [apiUrl, setApiUrl] = useState(() => initialApiUrl || localStorage.getItem('gateway.apiUrl') || 'http://localhost:3000/api/fall')
   const [status, setStatus] = useState('Idle')
   const [deviceName, setDeviceName] = useState('')
   const [logs, setLogs] = useState([])
@@ -19,21 +19,20 @@ export default function BleGateway() {
 
   useEffect(() => {
     localStorage.setItem('gateway.apiUrl', apiUrl)
-  }, [apiUrl])
+    if (onApiUrlChange) onApiUrlChange(apiUrl)
+  }, [apiUrl, onApiUrlChange])
 
   const requestDevice = useCallback(async () => {
     if (!navigator.bluetooth) {
       throw new Error('Web Bluetooth not supported in this browser. Use Chrome/Edge on desktop.')
     }
 
-    // Some adapters/OSes are picky with filters; try by service first, then accept-all with name.
     try {
       return await navigator.bluetooth.requestDevice({
         filters: [{ services: [FALL_SERVICE_UUID] }],
         optionalServices: [FALL_SERVICE_UUID],
       })
     } catch (e) {
-      // If user didn’t pick or no devices matched, rethrow
       if (e?.name !== 'NotFoundError') throw e
       return await navigator.bluetooth.requestDevice({
         acceptAllDevices: true,
@@ -60,13 +59,24 @@ export default function BleGateway() {
 
       const onNotify = (event) => {
         try {
-          const value = event.target.value // DataView
+          const value = event.target.value
           const bytes = new Uint8Array(value.buffer)
           const text = new TextDecoder('utf-8').decode(bytes)
           log(`BLE: ${text}`)
           forwardToApi(text)
             .then(() => log('Forwarded to API.'))
             .catch((err) => log(`POST error: ${err.message}`))
+          try {
+            const payload = JSON.parse(text)
+            const isFall = payload?.fall === true || payload?.type === 'fall' || payload?.event === 'fall'
+            if (isFall && typeof onFall === 'function') {
+              onFall(payload)
+            }
+            const isProximity = payload?.type === 'proximity' && (payload?.status === 'person_in_front' || payload?.status === 'near')
+            if (isProximity && typeof onProximity === 'function') {
+              onProximity(payload)
+            }
+          } catch {}
         } catch (err) {
           log(`Decode error: ${err.message}`)
         }
@@ -75,7 +85,6 @@ export default function BleGateway() {
       characteristic.addEventListener('characteristicvaluechanged', onNotify)
       await characteristic.startNotifications()
 
-      // Clean up on disconnect
       const onDisconnected = () => {
         setConnected(false)
         setStatus('Disconnected')
@@ -128,33 +137,45 @@ export default function BleGateway() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-      <h2>Web Bluetooth Gateway</h2>
-      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+      {!compact && <h2>Web Bluetooth Gateway</h2>}
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
         <label htmlFor="api-url">API URL</label>
         <input
           id="api-url"
           value={apiUrl}
           onChange={(e) => setApiUrl(e.target.value)}
-          style={{ width: 360 }}
-          placeholder="https://your-next-app/api/fall"
+          style={{ width: 260 }}
+          placeholder="http://localhost:3000/api/fall"
         />
+        <label htmlFor="device">Device</label>
+        <select
+          id="device"
+          value={deviceSelection || 'arduino-nano33ble'}
+          onChange={(e) => onDeviceSelectionChange && onDeviceSelectionChange(e.target.value)}
+        >
+          <option value="arduino-nano33ble">Arduino Nano 33 BLE</option>
+        </select>
         <button onClick={connect} disabled={connected}>Connect</button>
         <button onClick={disconnect} disabled={!connected}>Disconnect</button>
       </div>
       <div>
         <strong>Status:</strong> {status} {deviceName ? `— ${deviceName}` : ''}
       </div>
-      <div style={{ maxHeight: 320, overflow: 'auto', border: '1px solid #ccc', padding: 8 }}>
-        {logs.map((l, i) => (
-          <div key={i} style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>{l}</div>
-        ))}
-      </div>
-      <div style={{ color: '#666' }}>
-        <p>
-          Tip: Use Chrome/Edge on desktop. Serve over HTTPS or on <code>http://localhost</code>.
-          Close nRF Connect while using this gateway (only one central can connect).
-        </p>
-      </div>
+      {!compact && (
+        <>
+          <div style={{ maxHeight: 320, overflow: 'auto', border: '1px solid #ccc', padding: 8 }}>
+            {logs.map((l, i) => (
+              <div key={i} style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>{l}</div>
+            ))}
+          </div>
+          <div style={{ color: '#666' }}>
+            <p>
+              Tip: Use Chrome/Edge on desktop. Serve over HTTPS or on <code>http://localhost</code>.
+              Close nRF Connect while using this gateway (only one central can connect).
+            </p>
+          </div>
+        </>
+      )}
     </div>
   )
 }

@@ -7,10 +7,8 @@ export default function LoginPage({ onLoginSuccess }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Handle login logic here
     console.log('Login attempt:', { email, password })
 
-    // Proceed to user type selection
     if (onLoginSuccess) {
       onLoginSuccess({ email, password })
     }

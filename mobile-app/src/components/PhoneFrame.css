@@ -68,7 +68,6 @@
   z-index: 10;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .phone-frame-wrapper {
     padding: 1rem;

@@ -3,10 +3,9 @@ import './LoadingScreen.css'
 
 export default function LoadingScreen({ onLoadComplete }) {
   useEffect(() => {
-    // Simulate loading time, then transition to login
     const timer = setTimeout(() => {
       onLoadComplete()
-    }, 2500) // 2.5 seconds
+    }, 2500)
 
     return () => clearTimeout(timer)
   }, [onLoadComplete])
