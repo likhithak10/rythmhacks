@@ -1,26 +1,39 @@
-import { useState } from 'react'
-import './LoginPage.css'
+import { useState } from 'react';
+import './LoginPage.css';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
 
 export default function LoginPage({ onLoginSuccess }) {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isCreating, setIsCreating] = useState(false); // toggle between login/signup
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log('Login attempt:', { email, password })
-
-    if (onLoginSuccess) {
-      onLoginSuccess({ email, password })
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      let userCredential;
+      if (isCreating) {
+        // ✨ Sign-up
+        userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        alert('Account created successfully! 🎉');
+      } else {
+        // 🔐 Login
+        userCredential = await signInWithEmailAndPassword(auth, email, password);
+      }
+      const user = userCredential.user;
+      console.log('✅ Auth success:', user.email);
+      onLoginSuccess(user);
+    } catch (error) {
+      console.error('❌ Auth error:', error.code, error.message);
+      alert(error.message);
     }
-  }
+  };
 
   return (
     <div className="login-page">
       <div className="login-container">
-        <div className="login-header">
-          <h1>Welcome Back</h1>
-          <p>Sign in to continue</p>
-        </div>
+        <h1>{isCreating ? 'Create Account' : 'Welcome Back'}</h1>
+        <p>{isCreating ? 'Sign up to get started' : 'Sign in to continue'}</p>
 
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="form-group">
@@ -48,18 +61,20 @@ export default function LoginPage({ onLoginSuccess }) {
           </div>
 
           <button type="submit" className="login-button">
-            Sign In
+            {isCreating ? 'Create Account' : 'Sign In'}
           </button>
 
           <div className="login-footer">
-            <a href="#" className="forgot-password">Forgot Password?</a>
-          </div>
-
-          <div className="signup-link">
-            Don't have an account? <a href="#">Sign Up</a>
+            <button
+              type="button"
+              className="switch-mode"
+              onClick={() => setIsCreating(!isCreating)}
+            >
+              {isCreating ? 'Already have an account? Sign In' : "Don't have an account? Create one"}
+            </button>
           </div>
         </form>
       </div>
     </div>
-  )
+  );
 }
